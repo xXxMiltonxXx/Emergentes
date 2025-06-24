@@ -1,0 +1,14 @@
+services:
+  device:
+    build: .
+    container_name: d2c-device
+    tty: true
+    restart: on-failure
+    command: ["python", "device_simulation.py"]
+
+  cloud-service:
+    build: .
+    container_name: d2c-cloud-service
+    tty: true
+    restart: on-failure
+    command: ["python", "cloud_service.py"]

@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  # --- Servicio de la API (Backend) ---
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: http-api
+    ports:
+      - "5000:5000"
+    restart: on-failure
+    networks:
+      - iot-net
+
+  # --- Servicio del Frontend (Astro) ---
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        # Pasa la URL de la API al frontend durante la compilación
+        PUBLIC_API_URL: http://api:5000/api/data
+    container_name: http-frontend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - api
+    restart: on-failure
+    networks:
+      - iot-net
+
+  # --- Servicio del Simulador de Dispositivo ---
+  device-simulator:
+    build:
+      context: .
+      dockerfile: Dockerfile.device
+    container_name: http-device-simulator
+    environment:
+      # El simulador se comunica con la API a través de la red de Docker
+      API_URL: http://api:5000/api/data
+      DEVICE_ID: "Alpha-001"
+    depends_on:
+      - api
+    restart: on-failure
+    networks:
+      - iot-net
+
+networks:
+  iot-net:
+    driver: bridge

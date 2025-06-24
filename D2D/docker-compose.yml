@@ -1,0 +1,24 @@
+services:
+  d2d-device-1:
+    build: .
+    container_name: d2d-node-1
+    tty: true
+    network_mode: "host" # Esencial para que los contenedores compartan la misma interfaz de red
+    environment:
+      - DEVICE_ID=Alpha-001
+
+  d2d-device-2:
+    build: .
+    container_name: d2d-node-2
+    tty: true
+    network_mode: "host"
+    environment:
+      - DEVICE_ID=Bravo-002
+
+  d2d-device-3:
+    build: .
+    container_name: d2d-node-3
+    tty: true
+    network_mode: "host"
+    environment:
+      - DEVICE_ID=Charlie-003

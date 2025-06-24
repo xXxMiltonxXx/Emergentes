@@ -1,0 +1,16 @@
+services:
+  m2m-device-1:
+    build: .
+    container_name: m2m-simulator-device-01
+    restart: on-failure
+    tty: true  # Permite una salida más limpia para `rich`
+    environment:
+      - DEVICE_ID=A001
+
+  m2m-device-2:
+    build: .
+    container_name: m2m-simulator-device-02
+    restart: on-failure
+    tty: true
+    environment:
+      - DEVICE_ID=B002

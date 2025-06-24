@@ -1,0 +1,16 @@
+services:
+  publisher:
+    build: .
+    container_name: mqtt-publisher
+    tty: true # Mantiene el contenedor corriendo y permite ver la salida de rich
+    command: python publisher.py
+    restart: on-failure
+
+  subscriber:
+    build: .
+    container_name: mqtt-subscriber
+    tty: true
+    command: python subscriber.py
+    restart: on-failure
+    depends_on:
+      - publisher
