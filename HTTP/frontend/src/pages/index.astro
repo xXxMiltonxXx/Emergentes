@@ -1,38 +1,16 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import SensorData from '../components/SensorData.jsx';
+import SensorChart from '../components/SensorChart.jsx';
 
-// La URL de la API debe ser accesible desde el servidor de Astro
-// Cuando se ejecuta en Docker, se usará el nombre del servicio 'api'.
-const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:5000/api/data';
-
-let initialData = [];
-try {
-  const response = await fetch(API_URL);
-  if (response.ok) {
-    initialData = await response.json();
-  } else {
-    console.error("Error fetching initial data:", response.statusText);
-  }
-} catch (error) {
-  console.error("Failed to connect to API:", error);
-}
+const apiUrl = import.meta.env.PUBLIC_API_URL || 'http://localhost:5000/api/data';
 ---
 
 <Layout title="IoT Dashboard - HTTP RESTful">
 	<main>
-		<header>
-			<h1>
-				<span class="icon">📡</span>
-				IoT Sensor Dashboard
-			</h1>
-			<p>Visualización de datos de sensores recibidos por HTTP</p>
-		</header>
-
-		<SensorData initialData={initialData} apiUrl={API_URL} client:load />
-
-		<footer>
-			<p>Comunicación vía API RESTful (Flask) con un frontend Astro.</p>
-		</footer>
+		<h1>IoT Sensor Dashboard</h1>
+		<p class="instructions">
+			This dashboard displays live data from the IoT device simulator.
+		</p>
+		<SensorChart client:load apiUrl={apiUrl} />
 	</main>
 </Layout>

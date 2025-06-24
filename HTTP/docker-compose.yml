@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # --- Servicio de la API (Backend) ---
   api:
@@ -20,7 +18,7 @@ services:
       dockerfile: Dockerfile
       args:
         # Pasa la URL de la API al frontend durante la compilación
-        PUBLIC_API_URL: http://api:5000/api/data
+        PUBLIC_API_URL: http://localhost:5000/api/data
     container_name: http-frontend
     ports:
       - "8080:8080"

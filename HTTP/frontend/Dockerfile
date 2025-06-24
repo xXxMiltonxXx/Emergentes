@@ -22,11 +22,18 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Copia el servidor independiente desde la etapa de compilación
-COPY --from=build /app/dist/server/entry.mjs /app/entry.mjs
+# Copia los archivos de dependencias desde la etapa de compilación
+COPY --from=build /app/package.json ./package.json
+COPY --from=build /app/package-lock.json* ./package-lock.json*
+
+# Instala solo las dependencias de producción
+RUN npm install --omit=dev
+
+# Copia la aplicación construida
+COPY --from=build /app/dist ./dist
 
 # Expone el puerto
 EXPOSE 8080
 
 # Comando para iniciar el servidor
-CMD ["node", "/app/entry.mjs"]
+CMD ["node", "dist/server/entry.mjs"]
